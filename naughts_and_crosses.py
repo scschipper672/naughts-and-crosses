@@ -1,6 +1,5 @@
 
 player = ['o', 'x']
-
 board = [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]
 
 def make_board_string(board):
@@ -28,6 +27,10 @@ while True:
     turn = change_turn()
 
     print(f"{make_board_string(board)}\n")
+    if ' ' not in board[0] and ' ' not in board[1] and ' ' not in board[2]:
+        print(' ---- Draw ----')
+        break
+
     my_move = input(f"{turn}'s move: ")
 
     while not (len(my_move) == 2 and my_move[0] in 'abc' and my_move[1] in '123'):
@@ -39,13 +42,9 @@ while True:
     move_x = 'abc'.find(my_move[0])
     move_y = '123'.find(my_move[1])
     board[int(move_x)][int(move_y)] = turn
-   # print(f'{move_x}, {move_y}')
-    #print(f'{board[int(move_x)][int(move_y)]}')
-    #print(f"{board_string}\n")
 
-    if ' ' not in board[0] and ' ' not in board[1] and ' ' not in board[2]:
-        print('----- Draw -----')
-        break
     if win(turn):
         print(f'CONGRATULATIONS {turn.upper()}!! YOU WIN')
         break
+
+    print('\n'*100) # Scroll the previous board out of view
