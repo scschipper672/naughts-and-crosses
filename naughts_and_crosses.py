@@ -23,6 +23,25 @@ def win(player):
             board[0][0] == player and board[1][1] == player and board[2][2] == player) or (
             board[0][2] == player and board[1][1] == player and board[2][0] == player)
 
+def get_move(turn):
+    my_move = input(f"{turn}'s move: ")
+    if not (len(my_move) == 2 and my_move[0] in 'abc' and my_move[1] in '123'):
+        # TODO: bugfix - can override other player's move
+        print(f'\n{turn}, type the coordinates for your move')
+        print('Eg) a1')
+        return get_move(turn)
+    else:
+        return {'x': 'abc'.find(my_move[0]),
+                'y': '123'.find(my_move[1])}
+
+def make_move(turn, board):
+    my_move = get_move(turn)
+    if board[int(my_move['x'])][int(my_move['y'])] != ' ':
+        print('abc'[my_move['x']] + '123'[my_move['y']] + ' is already taken!')
+        return make_move(turn, board)
+    board[int(my_move['x'])][int(my_move['y'])] = turn
+    return board
+
 while True:
     turn = change_turn()
 
@@ -31,17 +50,7 @@ while True:
         print(' ---- Draw ----')
         break
 
-    my_move = input(f"{turn}'s move: ")
-
-    while not (len(my_move) == 2 and my_move[0] in 'abc' and my_move[1] in '123'):
-        print(f'\n{turn}, type the coordinates for your move')
-        print('Eg) a1')
-        my_move = input(f"{turn}'s move: ")
-
-    # make the move
-    move_x = 'abc'.find(my_move[0])
-    move_y = '123'.find(my_move[1])
-    board[int(move_x)][int(move_y)] = turn
+    board = make_move(turn, board)
 
     if win(turn):
         print(f'CONGRATULATIONS {turn.upper()}!! YOU WIN')
