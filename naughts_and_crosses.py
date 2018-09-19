@@ -1,5 +1,5 @@
 
-player = ['o', 'x']
+players = ['o', 'x']
 board = [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]
 
 def make_board_string(board):
@@ -11,28 +11,26 @@ def make_board_string(board):
   c {board[2][0]} | {board[2][1]} | {board[2][2]}'
 
 def change_turn():
-    change = player.pop(0)
-    player.append(change)
-    return player[0]
+    change = players.pop(0)
+    players.append(change)
+    return players[0]
 
 def win(player):
     return [player, player, player] in board or (
-            board[0][0] == player and board[1][0] == player and board[2][0] == player) or (
-            board[0][1] == player and board[1][1] == player and board[2][1] == player) or (
-            board[0][2] == player and board[1][2] == player and board[2][2] == player) or (
-            board[0][0] == player and board[1][1] == player and board[2][2] == player) or (
-            board[0][2] == player and board[1][1] == player and board[2][0] == player)
+            board[0][0] == board[1][0] == board[2][0] == player) or (
+            board[0][1] == board[1][1] == board[2][1] == player) or (
+            board[0][2] == board[1][2] == board[2][2] == player) or (
+            board[0][0] == board[1][1] == board[2][2] == player) or (
+            board[0][2] == board[1][1] == board[2][0] == player)
 
 def get_move(turn):
     my_move = input(f"{turn}'s move: ")
     if not (len(my_move) == 2 and my_move[0] in 'abc' and my_move[1] in '123'):
-        # TODO: bugfix - can override other player's move
         print(f'\n{turn}, type the coordinates for your move')
         print('Eg) a1')
         return get_move(turn)
-    else:
-        return {'x': 'abc'.find(my_move[0]),
-                'y': '123'.find(my_move[1])}
+    return {'x': 'abc'.find(my_move[0]),
+            'y': '123'.find(my_move[1])}
 
 def make_move(turn, board):
     my_move = get_move(turn)
